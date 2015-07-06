@@ -2,17 +2,22 @@
 <head>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
 </head>
-<body>
-	<div class="container">
+<body ng-app = 'app'>
+	<div ng-controller='TodoCtrl' class="container">
+		
 		<h1>To Do List</h1>
-		<ul class="list-group">
-			<li class="list-group-item">
-				<span>To read a book</span>
-			</li>
-			<li class="list-group-item">
-				<span>To go shopping</span>
+		<ul class="list-group" >
+			<li class="list-group-item" ng-repeat="todo in todos">
+				{{todo.todo}}
 			</li>
 		</ul>
 	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		var app = angular.module('app',[]);
+		app.controller('TodoCtrl',function($scope){
+			$scope.todos = [{user:'suthaw',todo:'Go to school'},{user:'suthaw',todo:'go to library'}];		
+		});
+	</script>
 </body>
 </html>
