@@ -1,14 +1,34 @@
 <html>
 <head>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
+	<style type="text/css" media="screen">
+	.done-true{
+		text-decoration:line-through;
+
+	}
+	</style>
 </head>
 <body ng-app = 'app'>
-	<div ng-controller='TodoCtrl' class="container">
-		
+<div ng-controller='TodoCtrl' class="container">
 		<h1>To Do List</h1>
+		<form role="form">
+			<div class="form-group">
+				<div class="input-group">
+					<input class="form-control" type="text" ng-model="todoBody">
+					<span class="input-group-btn">
+						<button class="btn btn-default" ng-click="addTodo()">Add To Do</button>
+
+					</span>
+				</div>
+			</div>
+		</form>
 		<ul class="list-group" >
 			<li class="list-group-item" ng-repeat="todo in todos">
-				{{todo.todo}}
+				 <div class="checkbox">
+					 <label>	
+						 <input type="checkbox" value="" ng-model="todo.done"/><span class="done-{{todo.done}}">{{todo.todo}}</span>
+				         </label>
+			       </div>
 			</li>
 		</ul>
 	</div>
@@ -16,7 +36,14 @@
 	<script type="text/javascript" charset="utf-8">
 		var app = angular.module('app',[]);
 		app.controller('TodoCtrl',function($scope){
-			$scope.todos = [{user:'suthaw',todo:'Go to school'},{user:'suthaw',todo:'go to library'}];		
+			$scope.todos = [{user:'suthaw',todo:'Go to school'},{user:'suthaw',todo:'go to library'}];
+			$scope.addTodo = function(){
+				$scope.todos.unshift({
+					user:'suthaw',
+					todo:$scope.todoBody
+					});
+				$scope.todoBody = null;
+			};		
 		});
 	</script>
 </body>
