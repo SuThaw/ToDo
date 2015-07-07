@@ -1,24 +1,39 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-
+var Todo = require('./models/todo');
 var app = express();
 
 app.use(bodyParser.urlencoded({extended:false}));
 
 app.use(bodyParser.json());
 
-app.get('/api/todos',function(req,res){
-	res.json([{
-		username:'suthaw',
-		body:'node rocks'	
-	}]);
+app.get('/api/todos',function(req,res,next){
+	Todo.find(function(err,todos){
+		if(err) return next(err);
+		res.status(200).json(todos);
+	});
+	
+});
+app.post('/api/todos',function(req,res,next){
+
+	var todo = new Todo({
+		user:req.body.user,
+		todo:req.body.todoBody
+	});
+
+	todo.save(function(err,todo){
+		if(err) return next(err);
+		res.status(201).json(todo);
+	});
 });
 
-app.post('/api/todos',function(req,res){
-	console.log('post received');
-	console.log(req.body.username);
-	console.log(req.body.todo);
-	res.sendStatus(201);
+app.put('/api/todos',function(req,res,next){
+	Todo.findById(req.body.id,function(err,todo){
+		if(err) return next(err);
+		todo.finish = true;
+		todo.save();
+		res.status(200).json(todo);
+	});
 });
 
 app.listen(3000,function(){
