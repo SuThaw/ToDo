@@ -26,7 +26,7 @@
 			<li class="list-group-item" ng-repeat="todo in todos">
 				 <div class="checkbox">
 					 <label>	
-						 <input type="checkbox" value="" ng-model="todo.done"/><span class="done-{{todo.done}}">{{todo.todo}}</span>
+						 <input type="checkbox" value="" ng-change=""/><span class="done-{{todo.finish}}">{{todo.todo}}</span>
 				         </label>
 			       </div>
 			</li>
@@ -35,15 +35,26 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
 		var app = angular.module('app',[]);
-		app.controller('TodoCtrl',function($scope){
-			$scope.todos = [{user:'suthaw',todo:'Go to school'},{user:'suthaw',todo:'go to library'}];
+		app.controller('TodoCtrl',function($scope,$http){
+			$http
+				.get('http://localhost:3000/api/todos')
+				.success(function(todos){
+					$scope.todos = todos;
+				});
+			
+			
+
 			$scope.addTodo = function(){
-				$scope.todos.unshift({
-					user:'suthaw',
-					todo:$scope.todoBody
-					});
-				$scope.todoBody = null;
-			};		
+				if($scope.todoBody){
+					$http
+						.post('/api/todos',{user:'suthaw',todoBody:$scope.todoBody})
+						.success(function(todo){
+							$scope.todos.unshift(todo);
+							$scope.todoBody = null;
+						});
+				}
+			};
+					
 		});
 	</script>
 </body>

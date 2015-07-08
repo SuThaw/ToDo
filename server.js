@@ -7,8 +7,15 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 app.use(bodyParser.json());
 
+app.get('/',function(req,res,netxt){
+	res.sendfile('layouts/todo.html');
+});
+
 app.get('/api/todos',function(req,res,next){
-	Todo.find(function(err,todos){
+	Todo
+	.find()
+	.sort('-date')
+	.exec(function(err,todos){
 		if(err) return next(err);
 		res.status(200).json(todos);
 	});
